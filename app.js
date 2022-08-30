@@ -1,16 +1,23 @@
+// load data from an api
 const loadPhones = async (searchText) => {
-    const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`;
-    const res = await fetch(url);
-    const data = await res.json();
-    displayPhones(data.data);
+    try {
+        const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        displayPhones(data.data);
+    } 
+    catch{
+        console.log(error);
+    }
 }
 
 const displayPhones = (phones) => {
     // console.log(phones)
     // phones.length === 0 ?
     noFoundPhone(phones);
-
-
+    // const allPhones = showAllPhones(phones)
+    phones.length > 12 ? phones = phones.slice(0, 12) : phones;
+    
     const phoneContainer = document.getElementById('phones-container');
     phones.forEach(phone => {
         // console.log(phone.length)
@@ -39,6 +46,7 @@ const displayPhones = (phones) => {
 const noFoundPhone = (phones) => {
     const warningMsg = document.getElementById('no-phone-warning');
     phones.length === 0 ? warningMsg.classList.remove('d-none') : warningMsg.classList.add('d-none');
+    showMorePhone(phones)
 }
 
 // add toggler spinner
@@ -46,6 +54,11 @@ const togglerSpinner = (isLoading) => {
     const loader = document.getElementById('loader');
     isLoading ? loader.classList.remove('d-none') : loader.classList.add('d-none');
 
+}
+
+const showMorePhone = (phones) => {
+    const showAllBtn = document.getElementById('show-all');
+    phones.length > 12 ? showAllBtn.classList.remove('d-none') : showAllBtn.classList.add('d-none');
 }
 
 // find text from search field
@@ -65,5 +78,13 @@ document.getElementById('search-btn').addEventListener('click', btn => {
 document.getElementById('search-field').addEventListener('keypress', event => {
     event.key === 'Enter' ? searchFieldText() : false;
 })
+
+// const showAllPhones = (phones) => {
+
+// }
+
+// document.getElementById('btn-show-all').addEventListener('click', btn => {
+    
+// })
 
 // loadPhones()
